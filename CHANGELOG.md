@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- README typo ("sipmle and effecitve" → "simple and effective").
+
+### Changed
+
+- Lower `go.mod` to `go 1.24` to match the README's stated minimum
+  (Go 1.24+ for `tool` directive support).
+
 ## [0.1.1] - 2026-05-07
 
 ### Changed

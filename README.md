@@ -72,7 +72,7 @@ into a dedicated file (e.g. `unreachable.go`) and exclude that file.
 
 ## Why regex on profile lines?
 
-It's sipmle and effecitve. Other tools in this space either:
+It's simple and effective. Other tools in this space either:
 
 - match globs against package paths (PaloAltoNetworks/cov), or
 - require a YAML config and cover the full CI lifecycle (vladopajic/go-test-coverage), or
