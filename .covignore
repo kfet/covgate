@@ -1,0 +1,4 @@
+# Coverage exclusions for covgate's own coverage gate.
+#
+# Entry-point shims: cmd/<binary>/main.go
+^github.com/kfet/covgate/cmd/[^/]+/main\.go:
