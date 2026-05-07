@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-05-07
+
 ### Changed
 
 - Drop the `tool` directive from `go.mod` and lower the minimum Go
