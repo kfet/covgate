@@ -9,25 +9,22 @@ the resulting statement-weighted coverage is below a minimum threshold.
 
 ## Install
 
-As a Go tool (recommended):
+```sh
+go install github.com/kfet/covgate/cmd/covgate@latest
+```
+
+On Go 1.24+ you can also register it as a project-local tool:
 
 ```sh
 go get -tool github.com/kfet/covgate/cmd/covgate@latest
-```
-
-Then invoke as `go tool covgate …`.
-
-Or as a regular binary:
-
-```sh
-go install github.com/kfet/covgate/cmd/covgate@latest
+# then: go tool covgate …
 ```
 
 ## Use
 
 ```sh
 go test -covermode=set -coverprofile=coverage.tmp.out ./...
-go tool covgate \
+covgate \
     -profile=coverage.tmp.out \
     -out=coverage.out         \
     -ignore=.covignore        \
@@ -149,10 +146,11 @@ err := covgate.Run(covgate.Config{
 ```makefile
 coverage:
 	go test -covermode=set -coverprofile=bin/coverage.tmp.out ./...
-	go tool covgate -profile=bin/coverage.tmp.out \
-	                -out=bin/coverage.out         \
-	                -ignore=.covignore            \
-	                -min=100
+	go run github.com/kfet/covgate/cmd/covgate@latest \
+	    -profile=bin/coverage.tmp.out \
+	    -out=bin/coverage.out         \
+	    -ignore=.covignore            \
+	    -min=100
 ```
 
 ## License

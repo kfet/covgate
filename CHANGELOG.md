@@ -4,15 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Drop the `tool` directive from `go.mod` and lower the minimum Go
+  version to 1.21 for wider compatibility. Users on Go 1.24+ can still
+  register covgate as a project-local tool via
+  `go get -tool github.com/kfet/covgate/cmd/covgate@latest`.
+
 ### Fixed
 
 - README typo ("sipmle and effecitve" → "simple and effective").
-
-### Changed
-
-- Lower `go.mod` to `go 1.24` (matches the `tool` directive's minimum).
-- Drop the "Go 1.24+" claim from the README — `go.mod` is the single
-  source of truth for the minimum toolchain.
 
 ## [0.1.1] - 2026-05-07
 
