@@ -53,7 +53,8 @@ github.com/you/pkg/file.go:12.34,15.6 7 0
 
 So `^github.com/you/pkg/file\.go:` excludes the whole file;
 `/generated\.go:` excludes any file named `generated.go` in any
-package; and so on.
+package; `^github.com/you/proj/e2e/` excludes a whole subpackage;
+and so on.
 
 Blank lines and `#` comments are skipped. Example:
 
@@ -61,14 +62,34 @@ Blank lines and `#` comments are skipped. Example:
 # Entry-point shims — bare flag parsing & dependency wiring.
 ^github.com/you/proj/cmd/[^/]+/main\.go:
 
-# Structurally-unreachable defensive code, isolated per package.
-/unreachable\.go:
+# Generated code.
+/zz_generated\.go:
+
+# Integration-only test package, exercised by a separate suite.
+^github.com/you/proj/e2e/
 ```
 
-The recommended discipline is to express exclusions as file-level
-patterns only — never line numbers or per-function regexes, both of
-which silently rot when surrounding code changes. Move unreachable code
-into a dedicated file (e.g. `unreachable.go`) and exclude that file.
+### One rule: file-level patterns only
+
+The single discipline `covgate` is opinionated about is: **express
+exclusions at the package or file level — never line numbers, never
+per-function regexes**. Both rot the moment surrounding code shifts,
+and per-function regexes silently mask new untested code added inside
+the same function.
+
+Anything coarser is fine. Whole files, whole subdirectories, whole
+generated bundles — all legitimate. There is no "approved list" of
+filenames; pick patterns that match how *your* code is organized.
+
+#### Anti-pattern to avoid: a dedicated "unreachable.go" file
+
+A common temptation is to invent a per-package `unreachable.go` (or
+`untestable.go`) file just to give the gate something to exclude.
+Don't. That's the same shape as a `utils.go` grab-bag: code organised
+by a meta-property ("hard to test") rather than by what it *is*.
+Exclude the file the code naturally lives in, or — better —
+restructure so the unreachable branch goes away (panic instead of
+returning an impossible error, etc.).
 
 ## Why regex on profile lines?
 
