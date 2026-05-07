@@ -10,8 +10,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Lower `go.mod` to `go 1.24` to match the README's stated minimum
-  (Go 1.24+ for `tool` directive support).
+- Lower `go.mod` to `go 1.24` (matches the `tool` directive's minimum).
+- Drop the "Go 1.24+" claim from the README — `go.mod` is the single
+  source of truth for the minimum toolchain.
 
 ## [0.1.1] - 2026-05-07
 

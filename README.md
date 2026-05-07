@@ -9,7 +9,7 @@ the resulting statement-weighted coverage is below a minimum threshold.
 
 ## Install
 
-As a Go tool (Go 1.24+, recommended):
+As a Go tool (recommended):
 
 ```sh
 go get -tool github.com/kfet/covgate/cmd/covgate@latest
