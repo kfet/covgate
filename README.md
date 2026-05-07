@@ -7,10 +7,6 @@ threshold flag.
 `.covignore` file, writes the filtered profile back out, and fails if
 the resulting statement-weighted coverage is below a minimum threshold.
 
-That's it. No YAML config, no GitHub Action wrapper, no badges, no
-per-package thresholds. If you want any of those, use
-[vladopajic/go-test-coverage](https://github.com/vladopajic/go-test-coverage).
-
 ## Install
 
 As a Go tool (Go 1.24+, recommended):
@@ -48,7 +44,7 @@ entry, and exits 1.
 ## `.covignore` format
 
 One regular expression per line (Go's [`regexp`](https://pkg.go.dev/regexp)
-syntax). The pattern is matched against the **raw profile line**, which
+syntax). The pattern is matched against the raw profile line, which
 looks like:
 
 ```
@@ -69,14 +65,14 @@ Blank lines and `#` comments are skipped. Example:
 /unreachable\.go:
 ```
 
-The recommended discipline is to express exclusions as **file-level
-patterns only** — never line numbers or per-function regexes, both of
+The recommended discipline is to express exclusions as file-level
+patterns only — never line numbers or per-function regexes, both of
 which silently rot when surrounding code changes. Move unreachable code
 into a dedicated file (e.g. `unreachable.go`) and exclude that file.
 
 ## Why regex on profile lines?
 
-Other tools in this space either:
+It's sipmle and effecitve. Other tools in this space either:
 
 - match globs against package paths (PaloAltoNetworks/cov), or
 - require a YAML config and cover the full CI lifecycle (vladopajic/go-test-coverage), or
@@ -115,4 +111,4 @@ coverage:
 
 ## License
 
-MIT.
+MIT
