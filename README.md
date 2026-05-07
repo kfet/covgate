@@ -69,27 +69,52 @@ Blank lines and `#` comments are skipped. Example:
 ^github.com/you/proj/e2e/
 ```
 
-### One rule: file-level patterns only
+### One rule: file- or directory-level patterns only
 
 The single discipline `covgate` is opinionated about is: **express
-exclusions at the package or file level — never line numbers, never
-per-function regexes**. Both rot the moment surrounding code shifts,
-and per-function regexes silently mask new untested code added inside
-the same function.
+exclusions at the file or directory boundary — never line numbers,
+never per-function regexes**. Both rot the moment surrounding code
+shifts, and per-function regexes silently mask new untested code
+added inside the same function.
 
-Anything coarser is fine. Whole files, whole subdirectories, whole
-generated bundles — all legitimate. There is no "approved list" of
-filenames; pick patterns that match how *your* code is organized.
+Anything coarser is fine. Whole files, whole packages, whole
+subdirectories, whole generated bundles — all legitimate. There is
+no "approved list" of filenames; pick patterns that match how
+*your* code is organised.
+
+A genuinely useful boundary is a **thin wrapper around an unmockable
+dependency**, isolated in its own file or directory (commonly named
+`ext`, `external`, `bridge`, etc.). The wrapper exists to keep the
+unmockable surface narrow so the rest of the package can be tested
+through it; the wrapper itself is exercised only by integration
+tests. Exclude that file or directory wholesale and move on:
+
+```
+# Thin wrapper around an unmockable C lib / OS API / vendor SDK.
+^github.com/you/proj/internal/foo/ext\.go:
+^github.com/you/proj/internal/bar/ext/
+```
 
 #### Anti-pattern to avoid: a dedicated "unreachable.go" file
 
 A common temptation is to invent a per-package `unreachable.go` (or
 `untestable.go`) file just to give the gate something to exclude.
-Don't. That's the same shape as a `utils.go` grab-bag: code organised
-by a meta-property ("hard to test") rather than by what it *is*.
-Exclude the file the code naturally lives in, or — better —
-restructure so the unreachable branch goes away (panic instead of
-returning an impossible error, etc.).
+Don't. That's the same shape as a `utils.go` grab-bag: code
+organised by a meta-property ("hard to test") rather than by what
+it *is*. The `ext.go` / `ext/` pattern above is different — it
+isolates a *real domain boundary* (the unmockable dependency); a
+file named after the testing problem itself is just a dumping
+ground.
+
+When tempted to add an exclusion, prefer restructuring first:
+
+- Push impossible-error branches into a `must…` helper that
+  panics, so callers have nothing to cover.
+- Move the genuinely-isolated dependency behind a thin wrapper at
+  a real domain boundary (`ext.go`, `osfs.go`, `vendor/foo/`),
+  and exclude the wrapper.
+
+Only fall back to a file/dir exclusion when the boundary is real.
 
 ## Why regex on profile lines?
 
